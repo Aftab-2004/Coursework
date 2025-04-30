@@ -101,11 +101,11 @@ app.get('/api/electionName', async function(req, res) {
 app.post('/api/electionName', validateFields(['election_name', 'election_organizer', 'election_password']), async function(req, res) {
     try {
         const election = await electionName.create({
-            election_id: Math.floor(Math.random() * 100),
-            election_name: req.body.election_name,
-            election_organizer: req.body.election_organizer,
-            election_password: md5(req.body.election_password),
-        });
+        election_id: Math.floor(Math.random() * 100),
+        election_name: req.body.election_name,
+        election_organizer: req.body.election_organizer,
+        election_password: md5(req.body.election_password),
+    });
         sendResponse(res, 201, true, election, 'Election created successfully');
     } catch (error) {
         sendResponse(res, 500, false, null, 'Error creating election');
@@ -115,8 +115,8 @@ app.post('/api/electionName', validateFields(['election_name', 'election_organiz
 app.post('/api/adminLogin', validateFields(['username', 'password']), async function(req, res) {
     try {
         const adminUser = await admin.findOne({
-            username: req.body.username,
-            password: md5(req.body.password),
+        username: req.body.username,
+        password: md5(req.body.password),
         });
         
         if (!adminUser) {
@@ -126,7 +126,7 @@ app.post('/api/adminLogin', validateFields(['username', 'password']), async func
         sendResponse(res, 200, true, { username: adminUser.username }, 'Admin login successful');
     } catch (error) {
         sendResponse(res, 500, false, null, 'Error during admin login');
-    }
+        }
 });
 
 const port = process.env.PORT || 8000;

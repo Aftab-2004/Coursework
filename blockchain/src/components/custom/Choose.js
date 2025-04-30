@@ -18,7 +18,7 @@ class Choose extends Component {
                         final: response.data.data
                     });
                 }
-            })
+        })
             .catch(error => {
                 console.error('Error fetching elections:', error);
             });
@@ -42,7 +42,7 @@ class Choose extends Component {
                     <li className="collection-item avatar">
                         <h3>Elections</h3>
                     </li>
-                    {electionList}
+                        {electionList}
                 </ul>
             </div>
         );
