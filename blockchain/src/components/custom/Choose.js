@@ -3,72 +3,49 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 class Choose extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
-            election_name: [],
-            election_organizer: [],
-            election_id: [],
-            final: [],
-            id: null,
+            final: []
         };
     }
 
-    componentDidMount(){
-        let currentComponent = this;
-      
-        axios.get('http://localhost:8000/api/electionName', {})
-        .then(function(response){ 
-            var data = response.data;
-            currentComponent.setState({
-                final: data
+    componentDidMount() {
+        axios.get('http://localhost:8000/api/electionName')
+            .then(response => {
+                if (response.data.success) {
+                    this.setState({
+                        final: response.data.data
+                    });
+                }
             })
-        })
-        .catch(function(err){
-            console.error(err);
-        });
-
+            .catch(error => {
+                console.error('Error fetching elections:', error);
+            });
     }
 
-    handleInputChange = (e) => {
-        // console.log(e.target.innerHTML);
-        var name = e.target.innerHTML;
-        var index = 0;
-        for(let i = 0; i < this.state.election_name.length; i++){
-            if(name === this.state.election_name[i]){
-                index = i;
-                break;
-            }
-        }
-        var id = this.state.election_id[index];
-        this.setState({
-            id : id
-        })
-    };
-
-
-    render(){
-        const electionList = this.state.final.map(election => {
+    render() {
+        const electionList = Array.isArray(this.state.final) ? this.state.final.map(election => {
             return (
                 <div className="contact" key={election.election_id}>
                     <li className="collection-item avatar">
                         <i className="material-icons circle blue darken-2">ballot</i>
-                        <Link to={"/vote/" + election.election_id} className="title" onClick={this.handleInputChange}>{election.election_name}</Link>
+                        <Link to={"/vote/" + election.election_id} className="title">{election.election_name}</Link>
                     </li>
                 </div>
-            )
-        }) 
-        return(
+            );
+        }) : null;
+
+        return (
             <div className="container">
                 <ul className="collection">
                     <li className="collection-item avatar">
                         <h3>Elections</h3>
                     </li>
-                        {electionList}
+                    {electionList}
                 </ul>
             </div>
-        )
+        );
     }
 }
 

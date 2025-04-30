@@ -92,12 +92,7 @@ app.post('/api/login', validateFields(['username', 'password']), async (req, res
 app.get('/api/electionName', async function(req, res) {
     try {
         const elections = await electionName.find({});
-        const final = elections.map(election => ({
-            election_id: election.election_id,
-            election_organizer: election.election_organizer,
-            election_name: election.election_name
-        }));
-        sendResponse(res, 200, true, final, 'Elections retrieved successfully');
+        sendResponse(res, 200, true, elections, 'Elections retrieved successfully');
     } catch (error) {
         sendResponse(res, 500, false, null, 'Error retrieving elections');
     }
